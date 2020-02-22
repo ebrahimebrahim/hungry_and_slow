@@ -1,1 +1,1 @@
-# hungry_and_slow
+# Hungry and Slow
