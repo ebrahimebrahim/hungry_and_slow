@@ -1,10 +1,18 @@
 extends Node2D
 
-export var direction_vec = Vector2(0,-1)
+var direction_vec = Vector2(0,-1)
+
+var max_speed = 200
+var speed_control_radius = 200
+
+var F   = 300
+var DF  = 150
+var B   = 30
+var DB  = 30
+
 
 func _ready():
 	update_direction(self.direction_vec)
-	
 	create_mask()
 
 
@@ -17,11 +25,11 @@ func get_mouse_relpos() -> Vector2:
 	return self.get_global_mouse_position() - position
 
 func _process(delta):
-	
 	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):
 		var rel_mouse_pos : Vector2 = get_mouse_relpos()
-		update_direction(rel_mouse_pos)
-		self.position += rel_mouse_pos / 75 # peupy for now
+		update_direction(rel_mouse_pos) # TODO: Instead of udating dir vec, impulse it the right way a small amt "rot speed"
+		var speed = max_speed * min(rel_mouse_pos.length(),speed_control_radius)/float(speed_control_radius)
+		self.position += (speed * delta) * direction_vec
 
 
 func create_mask():
@@ -34,10 +42,7 @@ func create_mask():
 	var p = Vector2(img.get_width()/2,img.get_height()/2)
 	
 	# forward and backward view distances
-	var F   = 300
-	var DF  = 150
-	var B   = 30
-	var DB  = 30
+
 	
 	for y in range(img.get_height()):
 		for x in range(img.get_width()):
