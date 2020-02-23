@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Prey.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+
+[node name="Prey" type="Node2D"]
+position = Vector2( 95.3719, -70.5984 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 0.627451, 0.560784, 0.94902, 1 )
+scale = Vector2( 0.675, 0.675 )
+texture = ExtResource( 2 )

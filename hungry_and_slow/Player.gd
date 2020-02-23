@@ -2,8 +2,8 @@ extends Node2D
 
 var direction_vec = Vector2(0,-1)
 
-var max_speed = 200
-var speed_control_radius = 200
+var max_speed = 400
+var speed_control_radius = 400
 var max_rot_speed = deg2rad(360*6) 
 
 var F   = 400
