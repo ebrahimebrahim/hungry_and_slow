@@ -4,7 +4,7 @@ var direction_vec = Vector2(0,-1)
 
 var max_speed = 200
 var speed_control_radius = 200
-var max_rot_speed = deg2rad(360*4) 
+var max_rot_speed = deg2rad(360*6) 
 
 var F   = 300
 var DF  = 150
