@@ -14,3 +14,7 @@ __meta__ = {
 modulate = Color( 0.627451, 0.560784, 0.94902, 1 )
 scale = Vector2( 0.675, 0.675 )
 texture = ExtResource( 2 )
+
+[node name="Panic Cooldown" type="Timer" parent="."]
+wait_time = 0.001
+[connection signal="timeout" from="Panic Cooldown" to="." method="_on_Panic_Cooldown_timeout"]
