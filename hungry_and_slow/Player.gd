@@ -6,10 +6,10 @@ var max_speed = 200
 var speed_control_radius = 200
 var max_rot_speed = deg2rad(360*6) 
 
-var F   = 300
-var DF  = 150
-var B   = 30
-var DB  = 30
+var F   = 400
+var DF  = 140
+var B   = 50
+var DB  = 50
 
 
 func _ready():
@@ -46,15 +46,12 @@ func _process(delta):
 
 func create_mask():
 	var img = Image.new()
-	var vp_size = get_viewport_rect().size
-	img.create(2*vp_size.x, 2*vp_size.y, false, Image.FORMAT_RGBA8)
+	var vp_diag_size = get_viewport_rect().size.length()
+	img.create(vp_diag_size, vp_diag_size, false, Image.FORMAT_RGBA8)
 	img.lock()
 	
 	# pixel that corresponds to player position
 	var p = Vector2(img.get_width()/2,img.get_height()/2)
-	
-	# forward and backward view distances
-
 	
 	for y in range(img.get_height()):
 		for x in range(img.get_width()):
