@@ -1,0 +1,2 @@
+make a unified creature class that player and prey can inherit from
+(e.g. direction of walk and orientation should be common)
