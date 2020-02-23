@@ -86,12 +86,14 @@ position = Vector2( -774.124, 324.483 )
 position = Vector2( 274.666, 454.59 )
 
 [node name="Player" type="Node2D" parent="."]
+z_index = 5
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="Mask" type="Sprite" parent="Player"]
+visible = false
 
 [node name="PlayerSprite" type="Sprite" parent="Player"]
 texture = ExtResource( 1 )
