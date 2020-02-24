@@ -1,6 +1,5 @@
-extends Node2D
+extends "Creature.gd"
 
-export var speed = 200
 export var freakout_radius = 200
 export var panic_time = 3 # will be the wait_time of child node panic timer
 
@@ -23,9 +22,12 @@ func player_not_spotted():
 
 func _process(delta):
 	if player_nearby:
-		position += (position - last_known_player_pos).normalized() * speed * delta
+		rotate_towards(position - last_known_player_pos,delta)
+		move_ahead(max_speed,delta)
 	else:
-		position += Vector2(1,0).rotated(randf()*2*PI) * speed/5 * delta
+		rotate_towards(Vector2(1,0).rotated(randf()*2*PI),delta)
+		move_ahead(max_speed/5,delta)
+
 
 
 func _on_Panic_Cooldown_timeout():

@@ -1,10 +1,5 @@
-extends Node2D
+extends "Creature.gd"
 
-var direction_vec = Vector2(0,-1)
-
-var max_speed = 400
-var speed_control_radius = 400
-var max_rot_speed = deg2rad(360*6) 
 
 var F   = 400
 var DF  = 140
@@ -13,13 +8,10 @@ var DB  = 50
 
 
 func _ready():
-	update_direction(self.direction_vec)
 	create_mask()
 
 
-func update_direction(dir : Vector2) -> void :
-	self.direction_vec = dir.normalized()
-	self.rotation = atan2(dir.y,dir.x)+PI/2
+
 
 
 func get_mouse_relpos() -> Vector2:
@@ -29,19 +21,13 @@ func _process(delta):
 	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):
 		var rel_mouse_pos : Vector2 = get_mouse_relpos()
 
-		var angle_difference = direction_vec.angle_to(rel_mouse_pos)
-		
-		# If angle diff is smaller than threshold (in radians),
-		# then snap to correct rotation immediately.
-		# Otherwise head gradually towards correct rotation
-		if abs(angle_difference) < 0.02:
-			update_direction(rel_mouse_pos)
-		else:
-			update_direction( direction_vec.rotated((max_rot_speed * delta) * angle_difference/PI) )
-		
+		rotate_towards(rel_mouse_pos,delta)
 		
 		var speed = max_speed * min(rel_mouse_pos.length(),speed_control_radius)/float(speed_control_radius)
-		self.position += (speed * delta) * direction_vec
+		move_ahead(speed,delta)
+
+
+
 
 
 func create_mask():
