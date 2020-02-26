@@ -22,11 +22,11 @@ func player_not_spotted():
 
 func _process(delta):
 	if player_nearby:
-		rotate_towards(position - last_known_player_pos,delta)
-		move_ahead(max_speed,delta)
+		step_rotate(position - last_known_player_pos,delta)
+		step_move_ahead(max_speed,delta)
 	else:
-		rotate_towards(Vector2(1,0).rotated(randf()*2*PI),delta)
-		move_ahead(max_speed/5,delta)
+		step_rotate(Vector2(1,0).rotated(randf()*2*PI),delta)
+		step_move_ahead(max_speed/5,delta)
 
 
 
