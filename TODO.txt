@@ -1,2 +1,13 @@
-make a unified creature class that player and prey can inherit from
-(e.g. direction of walk and orientation should be common)
+Creature class methods should be able delta_distance and not delta_time.
+This is because speed should work very differently for Player than for Prey, the two subclasses of Creature.
+Also, adjust the names of creature methods so that methods that do a single "step" of motion start with
+the word "step". These would be the sort of methods that often get called inside of a _process
+
+Create two methods for Creature:
+  set_path
+    takes a path (a poolvector or whatever, list of pts) and records the path as a member var of the Creature
+  step_path
+    move along the path by a given distance, and update the current path with the progress (so it consis
+    only of whatever remains)
+
+Create a test tileset with a navmesh built in and try to get pathfinding to work
