@@ -2,7 +2,7 @@ extends Node2D
 
 export var direction_vec = Vector2(0,-1)
 
-export var speed_control_radius = 400
+
 export var max_rot_speed = deg2rad(360*6)
 
 

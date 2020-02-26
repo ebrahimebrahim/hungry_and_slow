@@ -7,6 +7,7 @@ var B   = 50
 var DB  = 50
 
 var max_speed = 400
+export var speed_control_radius = 400
 
 
 func _ready():
