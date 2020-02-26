@@ -2,9 +2,8 @@ extends Node2D
 
 export var direction_vec = Vector2(0,-1)
 
-export var max_speed = 400
 export var speed_control_radius = 400
-export var max_rot_speed = deg2rad(360*6) 
+export var max_rot_speed = deg2rad(360*6)
 
 
 func _ready():
@@ -24,5 +23,5 @@ func step_rotate(target_direction : Vector2, delta_t : float) -> void:
 		update_direction( direction_vec.rotated((max_rot_speed * delta_t) * angle_difference/PI) )
 
 
-func step_move_ahead(speed, delta_t) -> void:
-	self.position += (speed * delta_t) * direction_vec	
+func step_move_ahead(dist : float) -> void:
+	self.position += dist * direction_vec	

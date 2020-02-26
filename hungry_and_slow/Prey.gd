@@ -6,6 +6,8 @@ export var panic_time = 3 # will be the wait_time of child node panic timer
 var player_nearby = false
 var last_known_player_pos = null # will be a Vector2
 
+var max_speed = 300
+
 onready var panic_cooldown = get_node("Panic Cooldown")
 
 
@@ -23,10 +25,10 @@ func player_not_spotted():
 func _process(delta):
 	if player_nearby:
 		step_rotate(position - last_known_player_pos,delta)
-		step_move_ahead(max_speed,delta)
+		step_move_ahead(max_speed * delta)
 	else:
 		step_rotate(Vector2(1,0).rotated(randf()*2*PI),delta)
-		step_move_ahead(max_speed/5,delta)
+		step_move_ahead(max_speed/5 * delta)
 
 
 

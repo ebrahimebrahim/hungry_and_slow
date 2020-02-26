@@ -6,6 +6,8 @@ var DF  = 140
 var B   = 50
 var DB  = 50
 
+var max_speed = 400
+
 
 func _ready():
 	create_mask()
@@ -24,7 +26,7 @@ func _process(delta):
 		step_rotate(rel_mouse_pos,delta)
 		
 		var speed = max_speed * min(rel_mouse_pos.length(),speed_control_radius)/float(speed_control_radius)
-		step_move_ahead(speed,delta)
+		step_move_ahead(speed * delta)
 
 
 
