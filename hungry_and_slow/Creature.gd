@@ -2,8 +2,10 @@ extends Node2D
 
 export var direction_vec = Vector2(0,-1)
 
-
 export var max_rot_speed = deg2rad(360*6)
+
+# The current path that this creature will walk along when step_path is called
+var path = PoolVector2Array() setget set_path
 
 
 func _ready():
@@ -23,5 +25,21 @@ func step_rotate(target_direction : Vector2, delta_t : float) -> void:
 		update_direction( direction_vec.rotated((max_rot_speed * delta_t) * angle_difference/PI) )
 
 
+
+
 func step_move_ahead(dist : float) -> void:
-	self.position += dist * direction_vec	
+	self.position += dist * direction_vec
+
+
+
+func set_path(new_path):
+	path = new_path
+
+func step_path(dist : float) -> void:
+	pass
+
+
+
+
+
+
