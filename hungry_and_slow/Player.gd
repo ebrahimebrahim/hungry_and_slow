@@ -11,14 +11,8 @@ export var speed_control_radius = 400
 
 
 func _ready():
-	create_mask()
-	
-	# Test stuff here
-	var test_timer = get_tree().create_timer(1.0)
-	yield(test_timer,"timeout")
-	path.push_back(Vector2(0,128))
-	path.push_back(Vector2(64,128))
-	path.push_back(Vector2(64,64))
+#	create_mask()
+	pass
 
 
 
@@ -35,9 +29,6 @@ func _process(delta):
 		
 		var speed = max_speed * min(rel_mouse_pos.length(),speed_control_radius)/float(speed_control_radius)
 		step_move_ahead(speed * delta)
-	
-	#Test stuff here
-	step_path(max_speed/3 * delta)
 
 
 
