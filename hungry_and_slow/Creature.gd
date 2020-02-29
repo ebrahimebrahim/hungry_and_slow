@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-export var direction_vec = Vector2(0,-1)
+export var direction_vec = Vector2(0,-1) setget update_direction
 
 export var max_rot_speed = deg2rad(360*6)
 

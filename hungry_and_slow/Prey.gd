@@ -27,7 +27,7 @@ func _physics_process(delta):
 		step_rotate(position - last_known_player_pos,delta)
 		step_move_ahead(max_speed)
 	else:
-		step_rotate(Vector2(1,0).rotated(randf()*2*PI),delta)
+		step_rotate(direction_vec.rotated(0.5*(0.5-randf())*2*PI),delta)
 		step_move_ahead(max_speed/5)
 
 
