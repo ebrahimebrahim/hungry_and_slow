@@ -7,7 +7,7 @@ const TreeStructure = preload("res://TreeStructure.gd")
 onready var state : TreeStructure = PreyStates.idle_stopped
 
 # Used for running_away
-var thing_running_away_from : Node = null
+var things_running_away_from : Array = [] # array of bodies
 
 # Used for seeking_safety
 var last_known_danger_pos = null # will be a Vector2
@@ -28,12 +28,16 @@ func _physics_process(delta):
 			step_path(max_speed/5 * delta, delta)
 			if not path: state = PreyStates.idle_stopped
 	elif state.IS(PreyStates.running_away):
-		step_rotate(position - thing_running_away_from.position,delta)
+		step_rotate(position - things_running_away_from[0].position,delta)
 		step_move_ahead(max_speed)
 	elif state.IS(PreyStates.seeking_safety):
 		step_rotate(position - last_known_danger_pos,delta)
 		step_move_ahead(max_speed)
 
+func _process(delta):
+	var l = (3-len(things_running_away_from))/3.0
+	modulate.g = l
+	modulate.b = l
 
 
 
@@ -43,15 +47,18 @@ func _on_Panic_Cooldown_timeout():
 
 
 func _on_VisibilityRegion_body_entered(body):
-	if body.is_in_group("player"):
+	if body.is_in_group("player") and body!=self:
 		state = PreyStates.running_away
 		panic_cooldown.stop()
-		thing_running_away_from = body
+		things_running_away_from.push_front(body)
 
 
 func _on_VisibilityRegion_body_exited(body):
-	if body.is_in_group("player"):
-		state = PreyStates.seeking_safety
-		panic_cooldown.start(panic_time)
-		last_known_danger_pos = body.position
+	if state.IS(PreyStates.running_away) and body.is_in_group("player"):
+		things_running_away_from.erase(body)
+		if not things_running_away_from:
+			state = PreyStates.seeking_safety
+			panic_cooldown.start(panic_time)
+			last_known_danger_pos = body.position
+		
 
