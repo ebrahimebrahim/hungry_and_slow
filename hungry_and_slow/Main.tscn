@@ -54,13 +54,13 @@ position = Vector2( 474.537, 216.425 )
 position = Vector2( -426.643, -141.999 )
 
 [node name="Prey3" parent="PreyList" instance=ExtResource( 4 )]
-position = Vector2( -448.857, 132.496 )
+position = Vector2( -304.153, 152.091 )
 
 [node name="Prey4" parent="PreyList" instance=ExtResource( 4 )]
-position = Vector2( 369.866, 295.923 )
+position = Vector2( 356.3, 166.292 )
 
 [node name="Prey5" parent="PreyList" instance=ExtResource( 4 )]
-position = Vector2( 369.866, 295.923 )
+position = Vector2( 299.021, 77.3592 )
 
 [node name="Prey6" parent="PreyList" instance=ExtResource( 4 )]
 position = Vector2( 453.96, -76.9451 )
@@ -69,15 +69,17 @@ position = Vector2( 453.96, -76.9451 )
 position = Vector2( -99.7888, -446.64 )
 
 [node name="Prey8" parent="PreyList" instance=ExtResource( 4 )]
-position = Vector2( -106.135, 307.029 )
+position = Vector2( 201.362, -99.952 )
 
 [node name="Prey9" parent="PreyList" instance=ExtResource( 4 )]
 position = Vector2( -774.124, 324.483 )
 
 [node name="Prey10" parent="PreyList" instance=ExtResource( 4 )]
-position = Vector2( 274.666, 454.59 )
+position = Vector2( 214.373, 211.909 )
 
-[node name="Player" type="KinematicBody2D" parent="."]
+[node name="Player" type="KinematicBody2D" parent="." groups=[
+"player",
+]]
 z_index = 5
 script = ExtResource( 2 )
 direction_vec = Vector2( -1, 0 )

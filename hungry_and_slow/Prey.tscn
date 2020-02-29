@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Prey.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -6,9 +6,14 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 21.7536, 21.503 )
 
+[sub_resource type="CircleShape2D" id=2]
+radius = 200.0
+
 [node name="Prey" type="KinematicBody2D"]
-position = Vector2( 95.3719, -70.5984 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 0.627451, 0.560784, 0.94902, 1 )
@@ -20,4 +25,11 @@ wait_time = 0.001
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
+
+[node name="VisibilityRegion" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisibilityRegion"]
+shape = SubResource( 2 )
 [connection signal="timeout" from="Panic Cooldown" to="." method="_on_Panic_Cooldown_timeout"]
+[connection signal="body_entered" from="VisibilityRegion" to="." method="_on_VisibilityRegion_body_entered"]
+[connection signal="body_exited" from="VisibilityRegion" to="." method="_on_VisibilityRegion_body_exited"]
