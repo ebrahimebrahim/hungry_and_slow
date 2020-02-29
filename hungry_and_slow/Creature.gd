@@ -35,15 +35,19 @@ func step_move_ahead(speed : float) -> void:
 
 
 
-func set_path(new_path):
+func set_path(new_path : PoolVector2Array):
 	path = new_path
+
+func set_destination(dest : Vector2):
+	set_path(PoolVector2Array([dest]))
+
 
 func step_path(dist : float, delta_t : float) -> void:
 	if not path or dist <= 0 : return
 	step_rotate(path[0]-position,delta_t)
 	var segment_length = position.distance_to(path[0])
 	if dist < segment_length :
-		position += dist * ((path[0]-position) / segment_length)
+		move_and_slide( (dist/delta_t) * (path[0]-position) / segment_length  )
 	elif dist >= segment_length :
 		position = path[0]
 		path.remove(0)
