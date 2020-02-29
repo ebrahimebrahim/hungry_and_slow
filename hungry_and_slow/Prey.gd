@@ -1,6 +1,6 @@
 extends "Creature.gd"
 
-export var panic_time = 3 # will be the wait_time of child node panic timer
+
 
 
 const TreeStructure = preload("res://TreeStructure.gd")
@@ -12,8 +12,8 @@ var thing_running_away_from : Node = null
 # Used for seeking_safety
 var last_known_danger_pos = null # will be a Vector2
 
-var max_speed = 300
-
+onready var max_speed = 100 + randi()%300
+onready var panic_time = 1 + randf()*3 # will be the wait_time of child node panic timer
 onready var panic_cooldown = get_node("Panic Cooldown")
 
 
