@@ -22,13 +22,13 @@ func player_not_spotted():
 		panic_cooldown.start(panic_time)
 
 
-func _process(delta):
+func _physics_process(delta):
 	if player_nearby:
 		step_rotate(position - last_known_player_pos,delta)
-		step_move_ahead(max_speed * delta)
+		step_move_ahead(max_speed)
 	else:
 		step_rotate(Vector2(1,0).rotated(randf()*2*PI),delta)
-		step_move_ahead(max_speed/5 * delta)
+		step_move_ahead(max_speed/5)
 
 
 

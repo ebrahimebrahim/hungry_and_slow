@@ -1,4 +1,4 @@
-extends Node2D
+extends KinematicBody2D
 
 export var direction_vec = Vector2(0,-1)
 
@@ -30,8 +30,8 @@ func step_rotate(target_direction : Vector2, delta_t : float) -> void:
 
 
 
-func step_move_ahead(dist : float) -> void:
-	position += dist * direction_vec
+func step_move_ahead(speed : float) -> void:
+	move_and_slide(speed*direction_vec)
 
 
 

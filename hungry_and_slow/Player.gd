@@ -21,14 +21,14 @@ func _ready():
 func get_mouse_relpos() -> Vector2:
 	return self.get_global_mouse_position() - position
 
-func _process(delta):
+func _physics_process(delta):
 	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):
 		var rel_mouse_pos : Vector2 = get_mouse_relpos()
 
 		step_rotate(rel_mouse_pos,delta)
 		
 		var speed = max_speed * min(rel_mouse_pos.length(),speed_control_radius)/float(speed_control_radius)
-		step_move_ahead(speed * delta)
+		step_move_ahead(speed)
 
 
 
