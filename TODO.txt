@@ -6,3 +6,5 @@ Create two methods for Creature:
     only of whatever remains)
 
 Create a test tileset with a navmesh built in and try to get pathfinding to work
+
+Change prey player-detection to use an Area2D and a signal, rather than a clunky loop in Main.gd
