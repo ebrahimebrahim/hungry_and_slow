@@ -1,12 +1,3 @@
-Create two methods for Creature:
-  set_path
-    takes a path (a poolvector or whatever, list of pts) and records the path as a member var of the Creature
-  step_path
-    move along the path by a given distance, and update the current path with the progress (so it consis
-    only of whatever remains)
-
-Create a test tileset with a navmesh built in and try to get pathfinding to work
-
-Change prey player-detection to use an Area2D and a signal, rather than a clunky loop in Main.gd
-
-Change player and prey to be KinematicBody2Ds that move_and_slide for their motion
+further clean up the raytracing-based pathfinding of Preys:
+  - shoot 3 rays from full extent of front face, instead of 1 from center.
+  - shoot make d_theta start small and then gradually grow, to prevent jitter along edge condition
