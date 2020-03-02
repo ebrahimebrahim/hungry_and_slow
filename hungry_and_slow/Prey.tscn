@@ -30,6 +30,15 @@ shape = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisibilityRegion"]
 shape = SubResource( 2 )
+
+[node name="txt" type="RichTextLabel" parent="."]
+margin_left = -51.2132
+margin_top = -50.7462
+margin_right = 47.7868
+margin_bottom = -1.74616
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="timeout" from="Panic Cooldown" to="." method="_on_Panic_Cooldown_timeout"]
 [connection signal="body_entered" from="VisibilityRegion" to="." method="_on_VisibilityRegion_body_entered"]
 [connection signal="body_exited" from="VisibilityRegion" to="." method="_on_VisibilityRegion_body_exited"]

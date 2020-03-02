@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-export var direction_vec = Vector2(0,-1) setget update_direction
+export var direction_vec : Vector2 = Vector2(0,-1) setget update_direction
 
 export var max_rot_speed = deg2rad(360*6)
 
@@ -17,15 +17,17 @@ func update_direction(dir : Vector2) -> void :
 	rotation = atan2(dir.y,dir.x)+PI/2
 
 
-func step_rotate(target_direction : Vector2, delta_t : float) -> void:
+func step_rotate(target_direction : Vector2, delta_t : float) -> bool:
 	var angle_difference = direction_vec.angle_to(target_direction)
 	if abs(angle_difference) < 0.02:
 		update_direction(target_direction)
+		return true # Return true when reached target orientation
 	else:
 		var delta_theta = (max_rot_speed * delta_t) * angle_difference/PI
 		if abs(delta_theta) > abs(angle_difference):
 			delta_theta = angle_difference
 		update_direction( direction_vec.rotated(delta_theta) )
+		return false
 
 
 
