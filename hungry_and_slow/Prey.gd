@@ -34,21 +34,22 @@ func _physics_process(delta):
 		elif state.IS(PreyStates.idle_motion):
 			step_path(max_speed/5 * delta, delta)
 			if not path: state = PreyStates.idle_stopped
+			elif triple_raycast(space_state, 0, 100): 
+				set_destination(self.position + 100*randf()*self.direction_vec.rotated((0.5-randf())*2*PI))
 	elif state.IS(PreyStates.running_away):
-		set_steering_as_needed(space_state)
+		set_steering_as_needed(space_state,400)
 		steer_or_rotate_towards(position - things_running_away_from[0].position,delta)
 		step_move_ahead(max_speed)
 	elif state.IS(PreyStates.seeking_safety):
-		set_steering_as_needed(space_state)
+		set_steering_as_needed(space_state,200)
 		steer_or_rotate_towards(position - last_known_danger_pos,delta)
 		step_move_ahead(max_speed)
 
 
 # Should only be called in _physics_process
-func set_steering_as_needed(space_state) -> void:
+func set_steering_as_needed(space_state, r:float) -> void:
 	
 	# "viewcone" r and Delta_theta (the cone angle is actually 2*Delta_theta)
-	var r : float = 400 # TODO determine this ray size in some better way
 	var Delta_theta : float = PI/4
 	
 	var result = space_state.intersect_ray(position,position+r*direction_vec,[self])
