@@ -67,12 +67,8 @@ func set_steering_as_needed(space_state) -> void:
 	var d_theta : float = $CollisionShape2D.shape.extents.x*2 / r
 	var theta : float = d_theta
 	while theta < Delta_theta:
-		var result_left = space_state.intersect_ray(position,
-			position+r*direction_vec.rotated(theta),
-			[self])
-		var result_right = space_state.intersect_ray(position,
-			position+r*direction_vec.rotated(-theta),
-			[self])
+		var result_left = triple_raycast(space_state,theta,r)
+		var result_right = triple_raycast(space_state,-theta,r)
 		if result_left and result_right:
 			theta += d_theta
 			continue
@@ -90,7 +86,20 @@ func set_steering_as_needed(space_state) -> void:
 	steer=true
 	theta = (2*(randi()%2)-1) * (PI/2 + randf()*PI/2)
 	target_direction = direction_vec.rotated(theta)
-	
+
+
+func triple_raycast(space_state, angle : float, r : float) -> bool:
+	var p1 = position+(-$CollisionShape2D.shape.extents).rotated(angle)
+	var p2 = position+Vector2(0,-$CollisionShape2D.shape.extents.y).rotated(angle)
+	var p3 = position+(Transform2D.FLIP_Y * $CollisionShape2D.shape.extents).rotated(angle)
+	var q1 = p1 + r*direction_vec.rotated(angle)
+	var q2 = p2 + r*direction_vec.rotated(angle)
+	var q3 = p3 + r*direction_vec.rotated(angle)
+	var result1 = space_state.intersect_ray(p1,q1,[self])
+	var result2 = space_state.intersect_ray(p2,q2,[self])
+	var result3 = space_state.intersect_ray(p3,q3,[self])
+	return result1 or result2 or result3
+
 
 
 func steer_or_rotate_towards(target_dir : Vector2, delta : float) -> void:
@@ -106,6 +115,7 @@ func _process(delta):
 	var l = (3-len(things_running_away_from))/3.0
 	modulate.g = l
 	modulate.b = l
+
 
 
 
