@@ -89,9 +89,11 @@ func set_steering_as_needed(space_state) -> void:
 
 
 func triple_raycast(space_state, angle : float, r : float) -> bool:
-	var p1 = position+(-$CollisionShape2D.shape.extents).rotated(angle)
-	var p2 = position+Vector2(0,-$CollisionShape2D.shape.extents.y).rotated(angle)
-	var p3 = position+(Transform2D.FLIP_Y * $CollisionShape2D.shape.extents).rotated(angle)
+	var extents = Vector2($CollisionShape2D.shape.extents.x,
+						  0.8 * $CollisionShape2D.shape.extents.y)
+	var p1 = position+(-extents).rotated(angle)
+	var p2 = position+Vector2(0,-extents.y).rotated(angle)
+	var p3 = position+(Transform2D.FLIP_Y * extents).rotated(angle)
 	var q1 = p1 + r*direction_vec.rotated(angle)
 	var q2 = p2 + r*direction_vec.rotated(angle)
 	var q3 = p3 + r*direction_vec.rotated(angle)
