@@ -1,3 +1,4 @@
 further clean up the raytracing-based pathfinding of Preys:
-  - shoot 3 rays from full extent of front face, instead of 1 from center.
-  - shoot make d_theta start small and then gradually grow, to prevent jitter along edge condition
+- Make current_speed be a creature variable that should be always set and used for movement
+- Make raycast distances be consts instead of magic numbers
+- After steering is completed there should a recover period before we go back to more steering or running away. The recovery period can be half raycast_dist/current_speed.
