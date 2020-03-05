@@ -5,6 +5,7 @@ extends "Creature.gd"
 
 const TreeStructure = preload("res://TreeStructure.gd")
 onready var state : TreeStructure = PreyStates.idle_stopped
+const obstacle_layer : int = 2
 
 # Used for running_away
 var things_running_away_from : Array = [] # array of bodies
@@ -25,7 +26,7 @@ onready var panic_cooldown = get_node("Panic Cooldown")
 
 
 func _physics_process(delta):
-	var space_state = get_world_2d().direct_space_state
+	var space_state : Physics2DDirectSpaceState = get_world_2d().direct_space_state
 	
 	if state.IS(PreyStates.idle):
 		if state.IS(PreyStates.idle_stopped):
@@ -52,7 +53,7 @@ func set_steering_as_needed(space_state, r:float) -> void:
 	# "viewcone" r and Delta_theta (the cone angle is actually 2*Delta_theta)
 	var Delta_theta : float = PI/4
 	
-	var result = space_state.intersect_ray(position,position+r*direction_vec,[self])
+	var result = space_state.intersect_ray(position,position+r*direction_vec,[self],obstacle_layer,true,true)
 	if not result: return
 	if not result.collider: return
 	
@@ -98,9 +99,9 @@ func triple_raycast(space_state, angle : float, r : float) -> bool:
 	var q1 = p1 + r*direction_vec.rotated(angle)
 	var q2 = p2 + r*direction_vec.rotated(angle)
 	var q3 = p3 + r*direction_vec.rotated(angle)
-	var result1 = space_state.intersect_ray(p1,q1,[self])
-	var result2 = space_state.intersect_ray(p2,q2,[self])
-	var result3 = space_state.intersect_ray(p3,q3,[self])
+	var result1 = space_state.intersect_ray(p1,q1,[self], obstacle_layer,true,true)
+	var result2 = space_state.intersect_ray(p2,q2,[self], obstacle_layer,true,true)
+	var result3 = space_state.intersect_ray(p3,q3,[self], obstacle_layer,true,true)
 	return result1 or result2 or result3
 
 

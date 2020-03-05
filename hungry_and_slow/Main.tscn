@@ -13,6 +13,9 @@ extents = Vector2( 31.4981, 31.6602 )
 [node name="Main" type="Node"]
 script = ExtResource( 5 )
 
+[node name="TileMap" type="TileMap" parent="."]
+format = 1
+
 [node name="Background Junk" type="Node2D" parent="."]
 position = Vector2( 1.52588e-05, 0 )
 
@@ -32,7 +35,7 @@ position = Vector2( 140.257, -401.292 )
 position = Vector2( -557.133, 247.398 )
 
 [node name="Tree6" parent="Background Junk" instance=ExtResource( 6 )]
-position = Vector2( 533.757, 109.089 )
+position = Vector2( 606.275, 182.05 )
 
 [node name="Tree7" parent="Background Junk" instance=ExtResource( 6 )]
 position = Vector2( 485.641, -168.504 )
@@ -63,7 +66,7 @@ position = Vector2( 356.3, 166.292 )
 position = Vector2( 299.021, 77.3592 )
 
 [node name="Prey6" parent="PreyList" instance=ExtResource( 4 )]
-position = Vector2( 453.96, -76.9451 )
+position = Vector2( 420.811, -53.6181 )
 
 [node name="Prey7" parent="PreyList" instance=ExtResource( 4 )]
 position = Vector2( -99.7888, -446.64 )
@@ -81,6 +84,7 @@ position = Vector2( 214.373, 211.909 )
 "player",
 ]]
 z_index = 5
+collision_layer = 3
 script = ExtResource( 2 )
 direction_vec = Vector2( -1, 0 )
 
