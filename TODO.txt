@@ -1,3 +1,2 @@
 further clean up the raytracing-based pathfinding of Preys:
-- Make raycast distances be consts instead of magic numbers
 - After steering is completed there should a recover period before we go back to more steering or running away. The recovery period can be half raycast_dist/current_speed.

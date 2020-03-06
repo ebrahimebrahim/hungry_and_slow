@@ -16,6 +16,7 @@ var last_known_danger_pos = null # will be a Vector2
 # Used for multiple behavioral states
 var steer : bool = false # means we are in process of changing rotation to target dir
 var target_direction : Vector2 # not assumed to be normalized
+var raycast_distance : float
 
 
 onready var max_speed = 100 + randi()%300
@@ -23,6 +24,28 @@ onready var panic_time = 1 + randf()*3 # will be the wait_time of child node pan
 onready var panic_cooldown = get_node("Panic Cooldown")
 
 
+func set_state_idle_motion():
+	state = PreyStates.idle_motion
+	raycast_distance = 100
+	current_speed = max_speed/5
+
+func set_state_idle_stopped():
+	state = PreyStates.idle_stopped
+	steer = false
+	raycast_distance = 100
+	current_speed = 0
+
+func set_state_running_away():
+	state = PreyStates.running_away
+	panic_cooldown.stop()
+	raycast_distance = 400
+	current_speed = max_speed
+
+func set_state_seeking_safety():
+	state = PreyStates.seeking_safety
+	panic_cooldown.start(panic_time)
+	raycast_distance = 200
+	current_speed = max_speed
 
 
 func _physics_process(delta):
@@ -31,22 +54,19 @@ func _physics_process(delta):
 	if state.IS(PreyStates.idle):
 		if state.IS(PreyStates.idle_stopped):
 			set_destination(self.position + 100*randf()*self.direction_vec.rotated(0.5*(0.5-randf())*2*PI) )
-			state = PreyStates.idle_motion
+			set_state_idle_motion()
 		elif state.IS(PreyStates.idle_motion):
-			current_speed = max_speed/5
 			step_path(delta)
-			if not path: state = PreyStates.idle_stopped
-			elif triple_raycast(space_state, 0, 100): 
+			if not path: set_state_idle_stopped()
+			elif triple_raycast(space_state, 0, raycast_distance): 
 				set_destination(self.position + 100*randf()*self.direction_vec.rotated((0.5-randf())*2*PI))
 	elif state.IS(PreyStates.running_away):
-		set_steering_as_needed(space_state,400)
+		set_steering_as_needed(space_state,raycast_distance)
 		steer_or_rotate_towards(position - things_running_away_from[0].position,delta)
-		current_speed = max_speed
 		step_move_ahead()
 	elif state.IS(PreyStates.seeking_safety):
-		set_steering_as_needed(space_state,200)
+		set_steering_as_needed(space_state,raycast_distance)
 		steer_or_rotate_towards(position - last_known_danger_pos,delta)
-		current_speed=max_speed
 		step_move_ahead()
 
 
@@ -128,14 +148,12 @@ func _process(delta):
 
 func _on_Panic_Cooldown_timeout():
 	if state.IS(PreyStates.seeking_safety):
-		state = PreyStates.idle_stopped
-		steer = false
+		set_state_idle_stopped()
 
 
 func _on_VisibilityRegion_body_entered(body):
 	if body.is_in_group("player") and body!=self:
-		state = PreyStates.running_away
-		panic_cooldown.stop()
+		set_state_running_away()
 		things_running_away_from.push_front(body)
 
 
@@ -143,8 +161,7 @@ func _on_VisibilityRegion_body_exited(body):
 	if state.IS(PreyStates.running_away) and body.is_in_group("player"):
 		things_running_away_from.erase(body)
 		if not things_running_away_from:
-			state = PreyStates.seeking_safety
-			panic_cooldown.start(panic_time)
+			set_state_seeking_safety()
 			last_known_danger_pos = body.position
 		
 
