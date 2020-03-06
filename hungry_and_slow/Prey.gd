@@ -21,7 +21,8 @@ var raycast_distance : float
 
 onready var max_speed = 100 + randi()%300
 onready var panic_time = 1 + randf()*3 # will be the wait_time of child node panic timer
-onready var panic_cooldown = get_node("Panic Cooldown")
+onready var panic_cooldown = get_node("PanicCooldown")
+onready var steering_cooldown = get_node("SteeringCooldown")
 
 
 func set_state_idle_motion():
@@ -58,20 +59,20 @@ func _physics_process(delta):
 		elif state.IS(PreyStates.idle_motion):
 			step_path(delta)
 			if not path: set_state_idle_stopped()
-			elif triple_raycast(space_state, 0, raycast_distance): 
+			elif triple_raycast(space_state, 0): 
 				set_destination(self.position + 100*randf()*self.direction_vec.rotated((0.5-randf())*2*PI))
 	elif state.IS(PreyStates.running_away):
-		set_steering_as_needed(space_state,raycast_distance)
+		set_steering_as_needed(space_state)
 		steer_or_rotate_towards(position - things_running_away_from[0].position,delta)
 		step_move_ahead()
 	elif state.IS(PreyStates.seeking_safety):
-		set_steering_as_needed(space_state,raycast_distance)
+		set_steering_as_needed(space_state)
 		steer_or_rotate_towards(position - last_known_danger_pos,delta)
 		step_move_ahead()
 
 
 # Should only be called in _physics_process
-func set_steering_as_needed(space_state, r:float) -> void:
+func set_steering_as_needed(space_state, r : float = raycast_distance) -> void:
 	
 	# "viewcone" r and Delta_theta (the cone angle is actually 2*Delta_theta)
 	var Delta_theta : float = PI/4
@@ -113,7 +114,7 @@ func set_steering_as_needed(space_state, r:float) -> void:
 	target_direction = direction_vec.rotated(theta)
 
 
-func triple_raycast(space_state, angle : float, r : float) -> bool:
+func triple_raycast(space_state, angle : float, r : float = raycast_distance) -> bool:
 	var extents = Vector2(1.1 * $CollisionShape2D.shape.extents.x,
 						  0.9 * $CollisionShape2D.shape.extents.y)
 	var p1 = position+(-extents).rotated(angle)

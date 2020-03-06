@@ -21,8 +21,10 @@ modulate = Color( 0.627451, 0.560784, 0.94902, 1 )
 scale = Vector2( 0.675, 0.675 )
 texture = ExtResource( 2 )
 
-[node name="Panic Cooldown" type="Timer" parent="."]
+[node name="PanicCooldown" type="Timer" parent="."]
 wait_time = 0.001
+
+[node name="SteeringCooldown" type="Timer" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -40,6 +42,6 @@ margin_bottom = -1.74616
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="timeout" from="Panic Cooldown" to="." method="_on_Panic_Cooldown_timeout"]
+[connection signal="timeout" from="PanicCooldown" to="." method="_on_Panic_Cooldown_timeout"]
 [connection signal="body_entered" from="VisibilityRegion" to="." method="_on_VisibilityRegion_body_entered"]
 [connection signal="body_exited" from="VisibilityRegion" to="." method="_on_VisibilityRegion_body_exited"]
