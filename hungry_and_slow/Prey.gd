@@ -33,18 +33,21 @@ func _physics_process(delta):
 			set_destination(self.position + 100*randf()*self.direction_vec.rotated(0.5*(0.5-randf())*2*PI) )
 			state = PreyStates.idle_motion
 		elif state.IS(PreyStates.idle_motion):
-			step_path(max_speed/5 * delta, delta)
+			current_speed = max_speed/5
+			step_path(delta)
 			if not path: state = PreyStates.idle_stopped
 			elif triple_raycast(space_state, 0, 100): 
 				set_destination(self.position + 100*randf()*self.direction_vec.rotated((0.5-randf())*2*PI))
 	elif state.IS(PreyStates.running_away):
 		set_steering_as_needed(space_state,400)
 		steer_or_rotate_towards(position - things_running_away_from[0].position,delta)
-		step_move_ahead(max_speed)
+		current_speed = max_speed
+		step_move_ahead()
 	elif state.IS(PreyStates.seeking_safety):
 		set_steering_as_needed(space_state,200)
 		steer_or_rotate_towards(position - last_known_danger_pos,delta)
-		step_move_ahead(max_speed)
+		current_speed=max_speed
+		step_move_ahead()
 
 
 # Should only be called in _physics_process

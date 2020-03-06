@@ -4,6 +4,8 @@ export var direction_vec : Vector2 = Vector2(0,-1) setget update_direction
 
 export var max_rot_speed = deg2rad(360*6)
 
+var current_speed : float = 0
+
 # The current path that this creature will walk along when step_path is called
 var path = PoolVector2Array() setget set_path
 
@@ -32,8 +34,8 @@ func step_rotate(target_direction : Vector2, delta_t : float) -> bool:
 
 
 
-func step_move_ahead(speed : float) -> void:
-	move_and_slide(speed*direction_vec)
+func step_move_ahead() -> void:
+	move_and_slide(current_speed*direction_vec)
 
 
 
@@ -44,7 +46,8 @@ func set_destination(dest : Vector2):
 	set_path(PoolVector2Array([dest]))
 
 
-func step_path(dist : float, delta_t : float) -> void:
+func step_path(delta_t : float, dist = null) -> void:
+	if not dist : dist = current_speed * delta_t
 	if not path or dist <= 0 : return
 	step_rotate(path[0]-position,delta_t)
 	var segment_length = position.distance_to(path[0])
@@ -54,7 +57,7 @@ func step_path(dist : float, delta_t : float) -> void:
 		position = path[0]
 		path.remove(0)
 		dist -= segment_length
-		step_path(dist, delta_t)
+		step_path(delta_t,dist)
 		
 
 

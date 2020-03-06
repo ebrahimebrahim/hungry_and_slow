@@ -27,8 +27,8 @@ func _physics_process(delta):
 
 		step_rotate(rel_mouse_pos,delta)
 		
-		var speed = max_speed * min(rel_mouse_pos.length(),speed_control_radius)/float(speed_control_radius)
-		step_move_ahead(speed)
+		current_speed = max_speed * min(rel_mouse_pos.length(),speed_control_radius)/float(speed_control_radius)
+		step_move_ahead()
 
 
 
