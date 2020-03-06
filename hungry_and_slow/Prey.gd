@@ -14,7 +14,7 @@ var things_running_away_from : Array = [] # array of bodies
 var last_known_danger_pos = null # will be a Vector2
 
 # Used for multiple behavioral states
-var steer : bool = false # means we are in process of changing rotation to target dir
+var steer : bool = false setget set_steer# means we are in process of changing rotation to target dir
 var target_direction : Vector2 # not assumed to be normalized
 var raycast_distance : float
 
@@ -32,7 +32,7 @@ func set_state_idle_motion():
 
 func set_state_idle_stopped():
 	state = PreyStates.idle_stopped
-	steer = false
+	set_steer(false)
 	raycast_distance = 100
 	current_speed = 0
 
@@ -47,6 +47,12 @@ func set_state_seeking_safety():
 	panic_cooldown.start(panic_time)
 	raycast_distance = 200
 	current_speed = max_speed
+
+func set_steer(desired_steer : bool):
+	if not steer and desired_steer :
+		steering_cooldown.start( min(0.4 , raycast_distance / current_speed) )
+	steer = desired_steer
+	
 
 
 func _physics_process(delta):
@@ -81,13 +87,7 @@ func set_steering_as_needed(space_state, r : float = raycast_distance) -> void:
 	if not result: return
 	if not result.collider: return
 	
-#	$txt.text = str(int(rad2deg(result.normal.angle_to(-direction_vec)))) # for TESTing
-	
-#	var collision_angle = result.normal.angle_to(-direction_vec) # 0 means head-on
-#	if abs(collision_angle) > PI/4 :
-#		steer = true
-#		target_direction = direction_vec.slide(result.normal)
-#		return
+	set_steer(true)
 		
 	# cast more rays, looking for a place to squeeze by
 	var d_theta : float = $CollisionShape2D.shape.extents.x*2 / r
@@ -99,17 +99,14 @@ func set_steering_as_needed(space_state, r : float = raycast_distance) -> void:
 			theta += d_theta
 			continue
 		if not result_right:
-			steer = true
 			target_direction = direction_vec.rotated(-theta)
 			if not result_left and randi()%2 :
 				target_direction = direction_vec.rotated(theta)
 			return
 		if not result_left:
-			steer = true
 			target_direction = direction_vec.rotated(theta)
 			return
 	
-	steer=true
 	theta = (2*(randi()%2)-1) * (PI/2 + randf()*PI/2)
 	target_direction = direction_vec.rotated(theta)
 
@@ -132,7 +129,8 @@ func triple_raycast(space_state, angle : float, r : float = raycast_distance) ->
 
 func steer_or_rotate_towards(target_dir : Vector2, delta : float) -> void:
 	if steer :
-		if step_rotate(target_direction,delta): steer = false
+		if step_rotate(target_direction,delta) and steering_cooldown.is_stopped():
+			set_steer(false)
 	else:
 		step_rotate(target_dir,delta)
 

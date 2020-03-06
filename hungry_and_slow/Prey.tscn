@@ -23,8 +23,10 @@ texture = ExtResource( 2 )
 
 [node name="PanicCooldown" type="Timer" parent="."]
 wait_time = 0.001
+one_shot = true
 
 [node name="SteeringCooldown" type="Timer" parent="."]
+one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

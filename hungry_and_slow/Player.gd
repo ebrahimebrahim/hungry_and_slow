@@ -6,7 +6,7 @@ var DF  = 140
 var B   = 50
 var DB  = 50
 
-var max_speed = 400
+var max_speed = 600
 export var speed_control_radius = 400
 
 

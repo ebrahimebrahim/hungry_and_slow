@@ -1,2 +1,3 @@
-further clean up the raytracing-based pathfinding of Preys:
-- After steering is completed there should a recover period before we go back to more steering or running away. The recovery period can be half raycast_dist/current_speed.
+tilemap with grass and markers for where to spawn "trees" (placeholders)
+
+food for prey
