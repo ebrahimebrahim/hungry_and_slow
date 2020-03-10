@@ -164,3 +164,8 @@ func _on_VisibilityRegion_body_exited(body):
 			last_known_danger_pos = body.position
 		
 
+
+
+func _on_HitBox_body_entered(body):
+	if body.is_in_group("player"):
+		queue_free()

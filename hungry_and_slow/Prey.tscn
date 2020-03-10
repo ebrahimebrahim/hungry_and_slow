@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Prey.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -8,6 +8,9 @@ extents = Vector2( 21.7536, 21.503 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 200.0
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 27.4664, 27.4453 )
 
 [node name="Prey" type="KinematicBody2D"]
 collision_layer = 3
@@ -44,6 +47,12 @@ margin_bottom = -1.74616
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="HitBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource( 3 )
 [connection signal="timeout" from="PanicCooldown" to="." method="_on_Panic_Cooldown_timeout"]
 [connection signal="body_entered" from="VisibilityRegion" to="." method="_on_VisibilityRegion_body_entered"]
 [connection signal="body_exited" from="VisibilityRegion" to="." method="_on_VisibilityRegion_body_exited"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]
