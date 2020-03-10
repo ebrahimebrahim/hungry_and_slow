@@ -19,7 +19,7 @@ var target_direction : Vector2 # not assumed to be normalized
 var raycast_distance : float
 
 
-onready var max_speed = 100 + randi()%300
+onready var max_speed = 400 + randi()%300
 onready var panic_time = 1 + randf()*3 # will be the wait_time of child node panic timer
 onready var panic_cooldown = get_node("PanicCooldown")
 onready var steering_cooldown = get_node("SteeringCooldown")
