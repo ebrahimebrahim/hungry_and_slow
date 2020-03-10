@@ -1,3 +1,8 @@
-tilemap with grass and markers for where to spawn "trees" (placeholders)
+obstacle avoid areas should be a bit larger than collision areas for trees
+this is how I was previously preventing prey slamming into or rubbing up on trees
+how to implement this now that trees are just tiles?
+maybe instead of trees being, tiles, make tiles mark areas where trees will grow
+
+hunger/speed relationship, and a UI displaying the hunger bar
 
 food for prey
