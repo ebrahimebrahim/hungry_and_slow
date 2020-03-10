@@ -14,7 +14,8 @@ var things_running_away_from : Array = [] # array of bodies
 var last_known_danger_pos = null # will be a Vector2
 
 # Used for multiple behavioral states
-var steer : bool = false setget set_steer# means we are in process of changing rotation to target dir
+var steer : bool = false setget set_steer# means we are in process of changing rotation to target_direction
+var steering_lock : bool = false # when on, steering to target dir cannot be interrupted by new raycast info
 var target_direction : Vector2 # not assumed to be normalized
 var raycast_distance : float
 
@@ -47,8 +48,9 @@ func set_state_running_away(init_dir : Vector2):
 	panic_cooldown.stop()
 	raycast_distance = 400
 	current_speed = max_speed
-	set_steer(true)
+	set_steer(true,true) # set and LOCK steering
 	target_direction = init_dir
+	
 
 func set_state_seeking_safety():
 	state = PreyStates.seeking_safety
@@ -56,10 +58,11 @@ func set_state_seeking_safety():
 	raycast_distance = 200
 	current_speed = max_speed
 
-func set_steer(desired_steer : bool):
+func set_steer(desired_steer : bool, desired_lock : bool = false):
 	if not steer and desired_steer :
 		steering_cooldown.start( min(0.4 , raycast_distance / current_speed) )
 	steer = desired_steer
+	steering_lock = desired_lock
 	
 
 
@@ -88,19 +91,24 @@ func _physics_process(delta):
 # Should only be called in _physics_process
 func set_steering_as_needed(space_state, r : float = raycast_distance) -> void:
 	
+	# if steering lock enabled then we will NOT update target_direction
+	if steer and steering_lock : return
+	
 	# "viewcone" r and Delta_theta (the cone angle is actually 2*Delta_theta)
 	var Delta_theta : float = PI/4
 	
 	var result = space_state.intersect_ray(position,position+r*direction_vec,[self],obstacle_layer,true,true)
 	if not result: return
 	if not result.collider: return
-	
-	set_steer(true)
-	
+
+
 	# don't try to steer around the player, just gtfo
 	if result.collider.is_in_group("player"):
 		target_direction = position - result.collider.position
+		set_steer(true,true) # steering on and locked
 		return
+		
+	set_steer(true)
 		
 	# cast more rays, looking for a place to squeeze by
 	var d_theta : float = $CollisionShape2D.shape.extents.x*2 / r

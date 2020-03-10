@@ -3,6 +3,7 @@ extends Node
 onready var camera = get_node("../Player/Camera2D")
 const PreyScene : PackedScene = preload("res://Prey.tscn")
 const spawn_area : Rect2 = Rect2(Vector2(-2970,-1440),Vector2(5800,4200)) # TODO: this is seuper peupy
+#const spawn_area : Rect2 = Rect2(Vector2(-1000,-1000),Vector2(2000,2000)) # For testing
 const max_prey : int = 100
 
 func spawn_prey_offscreen() -> void:
