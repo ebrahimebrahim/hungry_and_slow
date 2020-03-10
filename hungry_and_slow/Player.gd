@@ -12,6 +12,7 @@ export var speed_control_radius = 400
 
 func _ready():
 #	create_mask()
+	max_rot_speed = deg2rad(360*6)
 	pass
 
 
@@ -29,7 +30,18 @@ func _physics_process(delta):
 		
 		current_speed = max_speed * min(rel_mouse_pos.length(),speed_control_radius)/float(speed_control_radius)
 		step_move_ahead()
+	else:
+		current_speed = 0
 
+func _draw():
+	if current_speed>0 : draw_speed_overlay()
+
+func _process(delta):
+	update() # drawing update
+
+func draw_speed_overlay():
+	draw_line(Vector2(),to_local(position+speed_control_radius*direction_vec.normalized()),Color(1,0,0),2)
+	draw_line(Vector2(),to_local(position+(current_speed/max_speed)*speed_control_radius*direction_vec.normalized()),Color(0,1,1),4)
 
 
 

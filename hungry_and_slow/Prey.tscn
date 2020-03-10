@@ -10,7 +10,7 @@ extents = Vector2( 21.7536, 21.503 )
 radius = 200.0
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 27.4664, 27.4453 )
+extents = Vector2( 27.4664, 32.5538 )
 
 [node name="Prey" type="KinematicBody2D"]
 collision_layer = 3

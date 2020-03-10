@@ -25,6 +25,10 @@ onready var panic_cooldown = get_node("PanicCooldown")
 onready var steering_cooldown = get_node("SteeringCooldown")
 
 
+func _ready():
+	max_rot_speed = deg2rad(360*3)
+
+
 func set_state_idle_motion():
 	state = PreyStates.idle_motion
 	raycast_distance = 100
@@ -36,11 +40,15 @@ func set_state_idle_stopped():
 	raycast_distance = 100
 	current_speed = 0
 
-func set_state_running_away():
+func set_state_running_away(init_dir : Vector2):
+	# init_dir is the initial direction to start running away towards
+	# it is not assumed to be normalized
 	state = PreyStates.running_away
 	panic_cooldown.stop()
 	raycast_distance = 400
 	current_speed = max_speed
+	set_steer(true)
+	target_direction = init_dir
 
 func set_state_seeking_safety():
 	state = PreyStates.seeking_safety
@@ -88,6 +96,11 @@ func set_steering_as_needed(space_state, r : float = raycast_distance) -> void:
 	if not result.collider: return
 	
 	set_steer(true)
+	
+	# don't try to steer around the player, just gtfo
+	if result.collider.is_in_group("player"):
+		target_direction = position - result.collider.position
+		return
 		
 	# cast more rays, looking for a place to squeeze by
 	var d_theta : float = $CollisionShape2D.shape.extents.x*2 / r
@@ -141,6 +154,7 @@ func _process(delta):
 	var l = (3-len(things_running_away_from))/3.0
 	modulate.g = l
 	modulate.b = l
+	update() # for drawing thigns that test stuff.
 
 
 
@@ -152,7 +166,7 @@ func _on_Panic_Cooldown_timeout():
 
 func _on_VisibilityRegion_body_entered(body):
 	if body.is_in_group("player") and body!=self:
-		set_state_running_away()
+		set_state_running_away(position - body.position)
 		things_running_away_from.push_front(body)
 
 
@@ -169,3 +183,9 @@ func _on_VisibilityRegion_body_exited(body):
 func _on_HitBox_body_entered(body):
 	if body.is_in_group("player"):
 		queue_free()
+
+
+func _draw():
+	# useful for testing steering
+#	draw_line(Vector2(),to_local(position+200*target_direction.normalized()),Color(1,0,0),2)
+	pass
